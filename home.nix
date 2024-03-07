@@ -1,0 +1,133 @@
+{ config, pkgs, ... }:
+
+{
+
+  imports = [ ];
+
+  # turn off the check between home-manager and nixpkgs version
+  home.enableNixpkgsReleaseCheck = false;
+
+  # Home Manager needs a bit of information about you and the paths it should
+  # manage.
+  home.username = "chenjf";
+  home.homeDirectory = "/home/chenjf";
+
+  # This value determines the Home Manager release that your configuration is
+  # compatible with. This helps avoid breakage when a new Home Manager release
+  # introduces backwards incompatible changes.
+  #
+  # You should not change this value, even if you update Home Manager. If you do
+  # want to update the value, then make sure to first check the Home Manager
+  # release notes.
+  home.stateVersion = "23.11"; # Please read the comment before changing.
+
+  # The home.packages option allows you to install Nix packages into your
+  # environment.
+  home.packages = [
+    # # Adds the 'hello' command to your environment. It prints a friendly
+    # # "Hello, world!" when run.
+    # pkgs.hello
+
+    # some dev tools
+    pkgs.shellcheck
+    pkgs.nil
+    pkgs.efm-langserver
+
+    # some useful nix tools
+    pkgs.nix-diff
+    pkgs.nix-du
+    pkgs.nix-index
+    pkgs.nix-melt
+    pkgs.nix-tree
+    pkgs.nvd
+    pkgs.statix
+    pkgs.nix-output-monitor
+
+    # nix doc
+    pkgs.manix
+    pkgs.nix-doc
+
+    # nix tools written in haskell
+    # pkgs.haskellPackages.nix-thunk
+    pkgs.haskellPackages.nix-graph
+    pkgs.haskellPackages.nix-narinfo
+    pkgs.haskellPackages.nix-derivation
+    # pkgs.haskellPackages.nix-freeze-tree
+
+    # my only editor
+    pkgs.emacs29-nox
+
+    # # It is sometimes useful to fine-tune packages, for example, by applying
+    # # overrides. You can do that directly here, just don't forget the
+    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
+    # # fonts?
+    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
+
+    # # You can also create simple shell scripts directly inside your
+    # # configuration. For example, this adds a command 'my-hello' to your
+    # # environment:
+    # (pkgs.writeShellScriptBin "my-hello" ''
+    #   echo "Hello, ${config.home.username}!"
+    # '')
+  ];
+
+  # Home Manager is pretty good at managing dotfiles. The primary way to manage
+  # plain files is through 'home.file'.
+  home.file = {
+    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
+    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
+    # # symlink to the Nix store copy.
+    # ".screenrc".source = dotfiles/screenrc;
+
+    # # You can also set the file content immediately.
+    # ".gradle/gradle.properties".text = ''
+    #   org.gradle.console=verbose
+    #   org.gradle.daemon.idletimeout=3600000
+    # '';
+
+    # to let me login with ssh
+    ".ssh/authorized_keys" = {
+      text = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDouazcY0grLX8lAz/XrtDS1ZIo0s91BS7VrCKlzfRZtmcoI041vz+SBCCWbtnOMmWRFtA948aGtCN6EKD3JSREmrmJU1JfTIoekYzemdbjMbsTnIw0czP7weFtfFgdwhn8vro11k3uy0uG/32+aUYNUx+CNaDKulBRtg+oXRmjkrHCtapCHpN9/FMsvZjP0NbqVKtbf5Jem6Pqx8Himo3cZq3SKSYG8UIC/mAebEz793M5rR4FSvzXlfgiwCBn07F3+0rQAL6ZtsNEE521iJyU88tk6VsewPsZNvguCY21y3eKGYsny+ITMfR4liZjToIkrJGt3l7EMJawsAUemMWz hugh.jf.chen@gmail.com";
+      onChange = ''chmod 600 ~/.ssh/authorized_keys'';
+    };
+
+  };
+
+  # Home Manager can also manage your environment variables through
+  # 'home.sessionVariables'. If you don't want to manage your shell through Home
+  # Manager then you have to manually source 'hm-session-vars.sh' located at
+  # either
+  #
+  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
+  #
+  # or
+  #
+  #  /etc/profiles/per-user/chenjf/etc/profile.d/hm-session-vars.sh
+  #
+  home.sessionVariables = {
+    EDITOR = "vim";
+  };
+
+  # Let Home Manager install and manage itself.
+  programs.home-manager.enable = true;
+
+  # let home-manager manage my shell
+  programs.bash = {
+    enable = true;
+    bashrcExtra = ''
+      [[ -f ~/.oldbashrc ]] && . ~/.oldbashrc
+    '';
+    shellAliases = {
+      ll = "ls -l";
+      ltr = "ls -ltr";
+      ltra = "ls -ltra";
+      hm = "home-manager";
+    };
+  };
+
+  programs.git = {
+    enable = true;
+    userName  = "Hugh JF Chen";
+    userEmail = "hugh.jf.chen@gmail.com";
+  };
+}
