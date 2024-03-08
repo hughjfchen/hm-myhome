@@ -5,7 +5,7 @@ let
   pcfg = config.programs.emacs.init.usePackage;
 
 in {
-  imports = [ config.nur.repos.rycee.hmModules.emacs-init ];
+  imports = [ ./hmModules/emacs/emacs-init.nix ];
 
   #home.file = {
   #  ".emacs.d/nxml-schemas".source = ./dotfiles/emacs/nxml-schemas;

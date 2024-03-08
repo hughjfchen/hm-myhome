@@ -28,6 +28,9 @@
     # # "Hello, world!" when run.
     # pkgs.hello
 
+    # some utils
+    pkgs.wget
+
     # some dev tools
     pkgs.shellcheck
     pkgs.nil
@@ -56,6 +59,9 @@
 
     # my only editor
     pkgs.emacs29-nox
+
+    # the ultimate document handling tool
+    pkgs.pandoc
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -121,7 +127,8 @@
       ll = "ls -l";
       ltr = "ls -ltr";
       ltra = "ls -ltra";
-      hm = "home-manager";
+      hm = "cp -R ~/projects/hm-myhome/* ~/.config/home-manager/ ; home-manager";
+      hms = "cp -R ~/projects/hm-myhome/* ~/.config/home-manager/ ; home-manager switch";
     };
   };
 
@@ -129,5 +136,10 @@
     enable = true;
     userName  = "Hugh JF Chen";
     userEmail = "hugh.jf.chen@gmail.com";
+    extraConfig = {
+      init = {
+        defaultBranch = "main";
+      };
+    };
   };
 }
