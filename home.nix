@@ -52,9 +52,9 @@
 
     # nix tools written in haskell
     # pkgs.haskellPackages.nix-thunk
-    pkgs.haskellPackages.nix-graph
-    pkgs.haskellPackages.nix-narinfo
-    pkgs.haskellPackages.nix-derivation
+    # pkgs.haskellPackages.nix-graph
+    # pkgs.haskellPackages.nix-narinfo
+    # pkgs.haskellPackages.nix-derivation
     # pkgs.haskellPackages.nix-freeze-tree
 
     # my only editor
@@ -92,10 +92,12 @@
     # '';
 
     # to let me login with ssh
-    ".ssh/authorized_keys" = {
-      text = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDouazcY0grLX8lAz/XrtDS1ZIo0s91BS7VrCKlzfRZtmcoI041vz+SBCCWbtnOMmWRFtA948aGtCN6EKD3JSREmrmJU1JfTIoekYzemdbjMbsTnIw0czP7weFtfFgdwhn8vro11k3uy0uG/32+aUYNUx+CNaDKulBRtg+oXRmjkrHCtapCHpN9/FMsvZjP0NbqVKtbf5Jem6Pqx8Himo3cZq3SKSYG8UIC/mAebEz793M5rR4FSvzXlfgiwCBn07F3+0rQAL6ZtsNEE521iJyU88tk6VsewPsZNvguCY21y3eKGYsny+ITMfR4liZjToIkrJGt3l7EMJawsAUemMWz hugh.jf.chen@gmail.com";
-      onChange = ''chmod 600 ~/.ssh/authorized_keys'';
-    };
+    # don't want to config ssh with home-manager because the key would be put under nix store
+    # comment out for now.
+    # ".ssh/authorized_keys" = {
+    #   text = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDouazcY0grLX8lAz/XrtDS1ZIo0s91BS7VrCKlzfRZtmcoI041vz+SBCCWbtnOMmWRFtA948aGtCN6EKD3JSREmrmJU1JfTIoekYzemdbjMbsTnIw0czP7weFtfFgdwhn8vro11k3uy0uG/32+aUYNUx+CNaDKulBRtg+oXRmjkrHCtapCHpN9/FMsvZjP0NbqVKtbf5Jem6Pqx8Himo3cZq3SKSYG8UIC/mAebEz793M5rR4FSvzXlfgiwCBn07F3+0rQAL6ZtsNEE521iJyU88tk6VsewPsZNvguCY21y3eKGYsny+ITMfR4liZjToIkrJGt3l7EMJawsAUemMWz hugh.jf.chen@gmail.com";
+    #   onChange = ''chmod 600 ~/.ssh/authorized_keys'';
+    #};
 
   };
 
@@ -112,6 +114,8 @@
   #
   home.sessionVariables = {
     EDITOR = "vim";
+    TERM = "xterm-256color";
+    LC_ALL = "C.UTF-8";
   };
 
   # Let Home Manager install and manage itself.
@@ -124,6 +128,7 @@
       [[ -f ~/.oldbashrc ]] && . ~/.oldbashrc
     '';
     shellAliases = {
+      ls = "ls --color=always";
       ll = "ls -l";
       ltr = "ls -ltr";
       ltra = "ls -ltra";
