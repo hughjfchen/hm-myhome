@@ -113,7 +113,7 @@
   #  /etc/profiles/per-user/chenjf/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
-    EDITOR = "vim";
+    EDITOR = "nano";
     TERM = "xterm-256color";
     LC_ALL = "C.UTF-8";
   };
