@@ -99,6 +99,9 @@
     #   onChange = ''chmod 600 ~/.ssh/authorized_keys'';
     #};
 
+    # my org template and the docx template for export
+    "documents/template/org-template.org".source = ./resource/org/org-template.org;
+    "documents/template/pandoc-reference.docx".source = ./resource/pandoc/pandoc-reference.docx;
   };
 
   # Home Manager can also manage your environment variables through
