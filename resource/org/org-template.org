@@ -1,0 +1,33 @@
+#+title: The Title
+#+author: You
+#+date: yyyy-mm-dd
+#+PANDOC_OPTIONS: table-of-contents:t number-sections:t reference-doc:~/documents/pandoc-reference.docx
+
+* Part 1
+
+Write something.
+
+** Section 1
+
+And more thing.
+
+* Part 2
+
+This is part 2.
+
+** Section 1
+
+This section 1 of part 2.
+
+*** Section 1
+
+This is section 1 of section 1 of part 2.
+
+Let's put a table here:
+|-----+------+---------+---------------------|
+| who | when | where   | why                 |
+|-----+------+---------+---------------------|
+| me  | now  | nowhere | Just because I can  |
+| you | past | here    | Not sure if you can |
+| him | past | nowhere | suer he cannot      |
+|     |      |         |                     |
