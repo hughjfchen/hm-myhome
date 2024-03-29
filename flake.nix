@@ -11,33 +11,26 @@
   };
 
   outputs = { nixpkgs, home-manager, ... }:
-      let
-        x64pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        arm64pkgs = nixpkgs.legacyPackages.aarch64-linux;
-      in {
-        homeConfigurations."chenjf@localvm" = home-manager.lib.homeManagerConfiguration {
-          pkgs = x64pkgs;
+    let
+      systems = ["x86_64-linux" "aarch64-linux"];
+    in
+      {
+        packages =
+          nixpkgs.lib.attrsets.genAttrs systems (system:
+            {
+              homeConfigurations."chenjf" = home-manager.lib.homeManagerConfiguration {
+                pkgs = nixpkgs.legacyPackages.${system};
 
-          # Specify your home configuration modules here, for example,
-          # the path to your home.nix.
-          modules = [
-                      ./home.nix
-                    ];
+                # Specify your home configuration modules here, for example,
+                # the path to your home.nix.
+                modules = [
+                  ./home.nix
+                ];
 
-          # Optionally use extraSpecialArgs
-          # to pass through arguments to home.nix
-        };
-        homeConfigurations."chenjf@OPi5" = home-manager.lib.homeManagerConfiguration {
-          pkgs = arm64pkgs;
-
-          # Specify your home configuration modules here, for example,
-          # the path to your home.nix.
-          modules = [
-                      ./home.nix
-                    ];
-
-          # Optionally use extraSpecialArgs
-          # to pass through arguments to home.nix
-        };
+                # Optionally use extraSpecialArgs
+                # to pass through arguments to home.nix
+              };
+            }
+          );
       };
 }

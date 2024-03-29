@@ -37,6 +37,7 @@
     pkgs.efm-langserver
 
     # some useful nix tools
+    pkgs.nixfmt
     pkgs.nix-diff
     pkgs.nix-du
     pkgs.nix-index
