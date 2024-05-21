@@ -151,4 +151,7 @@
       };
     };
   };
+
+  # disable kanshi service
+  services.kanshi.enable = false;
 }
