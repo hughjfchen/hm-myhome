@@ -30,12 +30,12 @@
 
     # some utils
     pkgs.wget
+    pkgs.ripgrep
 
     # some dev tools
     pkgs.shellcheck
     pkgs.nil
     pkgs.efm-langserver
-    pkgs.direnv
 
     # some useful nix tools
     pkgs.nixfmt-rfc-style
@@ -154,6 +154,12 @@
         defaultBranch = "main";
       };
     };
+  };
+
+  programs.direnv = {
+      enable = true;
+      enableBashIntegration = true; # see note on other shells below
+      nix-direnv.enable = true;
   };
 
   # disable kanshi service
