@@ -62,6 +62,10 @@
     # my only editor
     pkgs.emacs29-nox
 
+    # and some graph tool
+    pkgs.graphviz-nox
+    pkgs.imagemagick
+
     # the ultimate document handling tool
     pkgs.pandoc
 
