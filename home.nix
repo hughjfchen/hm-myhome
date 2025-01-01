@@ -72,6 +72,9 @@
     # for java, and the ultimate text-based drawing tool, plantuml
     pkgs.jre
 
+    # for rabbitmq AMQP
+    pkgs.rabtap
+
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
