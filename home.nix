@@ -66,6 +66,9 @@
     pkgs.graphviz-nox
     pkgs.imagemagick
 
+    # and the ONE plot tool
+    pkgs.gnuplot
+
     # the ultimate document handling tool
     pkgs.pandoc
 
