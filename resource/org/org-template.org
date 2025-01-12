@@ -5,8 +5,8 @@
 #+OPTIONS: H:9
 #+OPTIONS: toc:9
 #+LANG: zh_CN
-#+PANDOC_OPTIONS: lua-filter:../pandoc/abstract-section.lua
-#+PANDOC_OPTIONS: reference-doc:../pandoc/pandoc-reference.docx
+#+PANDOC_OPTIONS: lua-filter:./pandoc-filter-abstract-section.lua
+#+PANDOC_OPTIONS: reference-doc:./pandoc-reference.docx
 #+PANDOC_OPTIONS: toc:t
 #+PANDOC_METADATA: toc-title:目录
 #+PANDOC_METADATA: abstract-title:文档信息
@@ -21,7 +21,7 @@
 +-------------------+----------------+------+---+--------------+---------+--------+-------------+
 | 用户代表          |                |签字：                   |     年 月 日                   |
 +-------------------+----------------+------+---+--------------+---------+--------+-------------+
-| 部门内部审核      | 详见《单元测试总结报告》                                                    |
+| 部门内部审核      | 详见《单元测试总结报告》                                                  |
 +-------------------+------------------------+------+---+------+---------+--------+-------------+
 |                                             审批                                              |
 +-------------------+----------------+------+---+--------------+---------+--------+-------------+

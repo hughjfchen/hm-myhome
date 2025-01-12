@@ -117,6 +117,8 @@
     # my org template and the docx template for export
     "documents/template/org-template.org".source = ./resource/org/org-template.org;
     "documents/template/pandoc-reference.docx".source = ./resource/pandoc/pandoc-reference.docx;
+    "documents/template/pandoc-filter-abstract-section.lua".source = ./resource/pandoc/pandoc-filter-abstract-section.lua;
+    "documents/template/pandoc-filter-remove-header-attrs-when-convert-from-docx-to-org.lua".source = ./resource/pandoc/pandoc-filter-remove-header-attrs-when-convert-from-docx-to-org.lua;
   };
 
   # Home Manager can also manage your environment variables through
