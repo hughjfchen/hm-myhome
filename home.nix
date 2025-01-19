@@ -65,6 +65,7 @@
     # and some graph tool
     pkgs.graphviz-nox
     pkgs.imagemagick
+    pkgs.pikchr
 
     # and the ONE plot tool
     pkgs.gnuplot
