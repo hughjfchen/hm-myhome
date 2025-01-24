@@ -60,7 +60,7 @@
     # pkgs.haskellPackages.nix-freeze-tree
 
     # my only editor
-    pkgs.emacs29-nox
+    pkgs.emacs-nox
 
     # and some graph tool
     pkgs.graphviz-nox
@@ -77,7 +77,7 @@
     pkgs.jre
 
     # for rabbitmq AMQP
-    pkgs.rabtap
+    #pkgs.rabtap
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
