@@ -36,6 +36,7 @@
     pkgs.shellcheck
     pkgs.nil
     pkgs.efm-langserver
+    pkgs.pyright
 
     # some useful nix tools
     pkgs.nixfmt-rfc-style
