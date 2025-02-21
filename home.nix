@@ -67,6 +67,7 @@
     pkgs.graphviz-nox
     pkgs.imagemagick
     pkgs.pikchr
+    pkgs.plantuml
 
     # and the ONE plot tool
     pkgs.gnuplot
