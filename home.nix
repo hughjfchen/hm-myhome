@@ -36,6 +36,7 @@
     pkgs.shellcheck
     pkgs.nil
     pkgs.efm-langserver
+    pkgs.poetry
     pkgs.pyright
 
     # some useful nix tools
