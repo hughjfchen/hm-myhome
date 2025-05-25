@@ -7,10 +7,10 @@ let
 in {
   imports = [ ./hmModules/emacs/emacs-init.nix ];
 
-  #home.file = {
+  home.file = {
   #  ".emacs.d/nxml-schemas".source = ./dotfiles/emacs/nxml-schemas;
-  #  ".emacs.d/snippets".source = ./dotfiles/emacs/snippets;
-  #};
+    ".emacs.d/snippets".source = ./resource/emacs/snippets;
+  };
 
   programs.emacs.init = {
     enable = true;
@@ -1233,7 +1233,7 @@ in {
         enable = true;
         after = [ "org" ];
         config = ''
-          (setq org-capture-templates rah-org-capture-templates)
+          ;; (setq org-capture-templates rah-org-capture-templates) ; not sure where this variable defined, comment out for now.
         '';
       };
 

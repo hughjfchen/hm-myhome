@@ -1,0 +1,19 @@
+# name: Create a Nix package
+# --
+{ stdenv$0 }:
+
+stdenv.mkDerivation rec {
+  name = "$1";
+
+  src = $2;
+
+  buildInputs = [ $3 ];
+
+  meta = with stdenv.lib; {
+    description = "$4";
+    homepage = $5;
+    license = licenses.$6;
+    maintainers = [ maintainers.rycee ];
+    platforms = platforms.$7;
+  };
+}

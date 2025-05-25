@@ -1,0 +1,5 @@
+# name: Create a Nix attribute set
+# --
+{
+  $0
+}
