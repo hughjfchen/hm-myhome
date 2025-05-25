@@ -29,6 +29,7 @@
     # pkgs.hello
 
     # some utils
+    pkgs.ispell
     pkgs.wget
     pkgs.ripgrep
 
