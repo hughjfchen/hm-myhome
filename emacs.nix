@@ -125,7 +125,8 @@ in {
       (put 'downcase-region 'disabled nil)
 
       (setq custom-file (locate-user-emacs-file "custom.el"))
-      (load custom-file)
+      (when (file-exists-p custom-file)
+        (load custom-file))
 
       ;; When finding file in non-existing directory, offer to create the
       ;; parent directory.
@@ -217,41 +218,41 @@ in {
         command = [ "auto-revert-mode" ];
       };
 
-      back-button = {
-        enable = true;
-        package = epkgs:
-          epkgs.back-button.overrideAttrs (drv:
-            let
-              isNotUcsUtils = p:
-                (builtins.parseDrvName p.name).name != "emacs-ucs-utils";
-            in {
-              patches = [
-                # ucs-utils makes Emacs shutdown very slow, remove its use through this patch.
-                (pkgs.fetchpatch {
-                  name = "remove-ucs-utils.patch";
-                  url =
-                    "https://github.com/rutger-eiq/back-button/commit/164cf6e2a536a8da6e45c0365922ea1887acde79.patch";
-                  sha256 =
-                    "0czii9hdk7l6j3palpb68377phms9jw9ldb51apjhbmscjyr55q3";
-                })
-              ];
+      #back-button = {
+      #  enable = true;
+      #  package = epkgs:
+      #    epkgs.back-button.overrideAttrs (drv:
+      #      let
+      #        isNotUcsUtils = p:
+      #          (builtins.parseDrvName p.name).name != "emacs-ucs-utils";
+      #      in {
+      #        patches = [
+      #          # ucs-utils makes Emacs shutdown very slow, remove its use through this patch.
+      #          (pkgs.fetchpatch {
+      #            name = "remove-ucs-utils.patch";
+      #            url =
+      #              "https://github.com/rutger-eiq/back-button/commit/164cf6e2a536a8da6e45c0365922ea1887acde79.patch";
+      #            sha256 =
+      #              "0czii9hdk7l6j3palpb68377phms9jw9ldb51apjhbmscjyr55q3";
+      #          })
+      #        ];
 
               # Also need to remove ucs-utils from the various build inputs.
-              buildInputs = builtins.filter isNotUcsUtils drv.buildInputs;
-              propagatedBuildInputs =
-                builtins.filter isNotUcsUtils drv.propagatedBuildInputs;
-              propagatedUserEnvPkgs =
-                builtins.filter isNotUcsUtils drv.propagatedUserEnvPkgs;
-            });
-        defer = 2;
-        command = [ "back-button-mode" ];
-        config = ''
-          (back-button-mode 1)
+      #        buildInputs = builtins.filter isNotUcsUtils drv.buildInputs;
+      #        propagatedBuildInputs =
+      #          builtins.filter isNotUcsUtils drv.propagatedBuildInputs;
+      #        propagatedUserEnvPkgs =
+      #          builtins.filter isNotUcsUtils drv.propagatedUserEnvPkgs;
+      #      });
+      #  defer = 2;
+      #  command = [ "back-button-mode" ];
+      #  config = ''
+      #    (back-button-mode 1)
 
-          ;; Make mark ring larger.
-          (setq global-mark-ring-max 50)
-        '';
-      };
+      #    ;; Make mark ring larger.
+      #    (setq global-mark-ring-max 50)
+      #  '';
+      #};
 
       base16-theme = {
         enable = true;
@@ -360,11 +361,11 @@ in {
         '';
       };
 
-      lsp-dhall = {
-        enable = true;
-        defer = true;
-        hook = [ "(dhall-mode . rah-lsp)" ];
-      };
+      # lsp-dhall = {
+      #   enable = true;
+      #   defer = true;
+      #   hook = [ "(dhall-mode . rah-lsp)" ];
+      # };
 
       dockerfile-mode.enable = true;
 
@@ -740,197 +741,285 @@ in {
       };
 
       # Configure AUCTeX.
-      latex = {
-        enable = true;
-        package = epkgs: epkgs.auctex;
-        hook = [''
-          (LaTeX-mode
-           . (lambda ()
-               (turn-on-reftex)       ; Hook up AUCTeX with RefTeX.
-               (auto-fill-mode)
-               (define-key LaTeX-mode-map [adiaeresis] "\\\"a")))
-        ''];
-        config = ''
-          (setq TeX-PDF-mode t
-                TeX-auto-save t
-                TeX-parse-self t)
+      #latex = {
+      #  enable = true;
+      #  package = epkgs: epkgs.auctex;
+      #  hook = [''
+      #    (LaTeX-mode
+      #     . (lambda ()
+      #         (turn-on-reftex)       ; Hook up AUCTeX with RefTeX.
+      #         (auto-fill-mode)
+      #         (define-key LaTeX-mode-map [adiaeresis] "\\\"a")))
+      #  ''];
+      #  config = ''
+      #    (setq TeX-PDF-mode t
+      #          TeX-auto-save t
+      #          TeX-parse-self t)
 
-          ;; Add Glossaries command. See
-          ;; http://tex.stackexchange.com/a/36914
-          (eval-after-load "tex"
-            '(add-to-list
-              'TeX-command-list
-              '("Glossaries"
-                "makeglossaries %s"
-                TeX-run-command
-                nil
-                t
-                :help "Create glossaries file")))
-        '';
-      };
+      #    ;; Add Glossaries command. See
+      #    ;; http://tex.stackexchange.com/a/36914
+      #    (eval-after-load "tex"
+      #      '(add-to-list
+      #        'TeX-command-list
+      #        '("Glossaries"
+      #          "makeglossaries %s"
+      #          TeX-run-command
+      #          nil
+      #          t
+      #          :help "Create glossaries file")))
+      #  '';
+      #};
 
-      lsp-elm = {
-        enable = true;
-        defer = true;
-        hook = [ "(elm-mode . rah-lsp)" ];
-        config = ''
-          (setq lsp-elm-elm-language-server-path
-                  "${pkgs.elmPackages.elm-language-server}/bin/elm-language-server")
-        '';
-      };
+      # lsp-elm = {
+      #   enable = true;
+      #   defer = true;
+      #   hook = [ "(elm-mode . rah-lsp)" ];
+      #   config = ''
+      #     (setq lsp-elm-elm-language-server-path
+      #             "${pkgs.elmPackages.elm-language-server}/bin/elm-language-server")
+      #   '';
+      # };
 
-      lsp-haskell = {
-        enable = true;
-        defer = true;
-        hook = [ "(haskell-mode . rah-lsp)" ];
-      };
+      # lsp-haskell = {
+      #   enable = true;
+      #   defer = true;
+      #   hook = [ "(haskell-mode . rah-lsp)" ];
+      #   config = ''
+      #     (setq lsp-haskell-server-path
+      #             "haskell-language-server")
+      #   '';
+      # };
 
-      lsp-purescript = {
-        enable = true;
-        defer = true;
-        hook = [ "(purescript-mode . rah-lsp) " ];
-      };
+      # lsp-purescript = {
+      #   enable = true;
+      #   defer = true;
+      #   hook = [ "(purescript-mode . rah-lsp) " ];
+      # };
 
-      lsp-ui = {
-        enable = true;
-        command = [ "lsp-ui-mode" ];
-        bindLocal = {
-          lsp-mode-map = {
-            "C-c r d" = "lsp-ui-doc-glance";
-            "C-c f s" = "lsp-ui-find-workspace-symbol";
-          };
-        };
-        config = ''
-          (setq lsp-ui-sideline-enable t
-                lsp-ui-sideline-show-symbol nil
-                lsp-ui-sideline-show-hover nil
-                lsp-ui-sideline-show-code-actions nil
-                lsp-ui-sideline-update-mode 'point)
-          (setq lsp-ui-doc-enable nil
-                lsp-ui-doc-position 'at-point
-                lsp-ui-doc-max-width 120
-                lsp-ui-doc-max-height 15)
-        '';
-      };
+      # lsp-ui = {
+      #   enable = true;
+      #   command = [ "lsp-ui-mode" ];
+      #   bindLocal = {
+      #     lsp-mode-map = {
+      #       "C-c r d" = "lsp-ui-doc-glance";
+      #       "C-c f s" = "lsp-ui-find-workspace-symbol";
+      #     };
+      #   };
+      #   config = ''
+      #     (setq lsp-ui-sideline-enable t
+      #           lsp-ui-sideline-show-symbol nil
+      #           lsp-ui-sideline-show-hover nil
+      #           lsp-ui-sideline-show-code-actions nil
+      #           lsp-ui-sideline-update-mode 'point)
+      #     (setq lsp-ui-doc-enable nil
+      #           lsp-ui-doc-position 'at-point
+      #           lsp-ui-doc-max-width 120
+      #           lsp-ui-doc-max-height 15)
+      #   '';
+      # };
 
-      lsp-ui-flycheck = {
-        enable = true;
-        after = [ "flycheck" "lsp-ui" ];
-      };
+      # lsp-ui-flycheck = {
+      #   enable = true;
+      #   after = [ "flycheck" "lsp-ui" ];
+      # };
 
-      lsp-completion = {
-        enable = true;
-        after = [ "lsp-mode" ];
-        config = ''
-          (setq lsp-completion-enable-additional-text-edit nil)
-        '';
-      };
+      # lsp-completion = {
+      #   enable = true;
+      #   after = [ "lsp-mode" ];
+      #   config = ''
+      #     (setq lsp-completion-enable-additional-text-edit nil)
+      #   '';
+      # };
 
-      lsp-diagnostics = {
-        enable = true;
-        after = [ "lsp-mode" ];
-      };
+      # lsp-diagnostics = {
+      #   enable = true;
+      #   after = [ "lsp-mode" ];
+      # };
 
-      lsp-mode = {
-        enable = true;
-        command = [ "lsp" ];
-        after = [ "company" "flycheck" ];
-        hook = [ "(lsp-mode . lsp-enable-which-key-integration)" ];
-        bindLocal = {
-          lsp-mode-map = {
-            "C-c r r" = "lsp-rename";
-            "C-c r f" = "lsp-format-buffer";
-            "C-c r g" = "lsp-format-region";
-            "C-c r a" = "lsp-execute-code-action";
-            "C-c f r" = "lsp-find-references";
-          };
-        };
-        init = ''
-          (setq lsp-keymap-prefix "C-c l")
-        '';
-        config = ''
-          (setq lsp-diagnostics-provider :flycheck
-                lsp-eldoc-render-all nil
-                lsp-headerline-breadcrumb-enable nil
-                lsp-modeline-code-actions-enable nil
-                lsp-modeline-diagnostics-enable nil
-                lsp-modeline-workspace-status-enable nil)
-          (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-        '';
-      };
+      # lsp-mode = {
+      #   enable = true;
+      #   command = [ "lsp" ];
+      #   after = [ "company" "flycheck" ];
+      #   hook = [ "(lsp-mode . lsp-enable-which-key-integration)" ];
+      #   bindLocal = {
+      #     lsp-mode-map = {
+      #       "C-c r r" = "lsp-rename";
+      #       "C-c r f" = "lsp-format-buffer";
+      #       "C-c r g" = "lsp-format-region";
+      #       "C-c r a" = "lsp-execute-code-action";
+      #       "C-c f r" = "lsp-find-references";
+      #     };
+      #   };
+      #   init = ''
+      #     (setq lsp-keymap-prefix "C-c l")
+      #   '';
+      #   config = ''
+      #     (setq lsp-diagnostics-provider :flycheck
+      #           lsp-eldoc-render-all nil
+      #           lsp-headerline-breadcrumb-enable nil
+      #           lsp-modeline-code-actions-enable nil
+      #           lsp-modeline-diagnostics-enable nil
+      #           lsp-modeline-workspace-status-enable nil)
+      #     (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
+      #   '';
+      # };
 
-      lsp-java = {
-        enable = true;
-        defer = true;
-        hook = [ "(java-mode . rah-lsp)" ];
-        bindLocal = {
-          java-mode-map = { "C-c r o" = "lsp-java-organize-imports"; };
-        };
-        config = ''
-          (setq lsp-java-save-actions-organize-imports nil
-                lsp-java-completion-favorite-static-members
-                    ["org.assertj.core.api.Assertions.*"
-                     "org.assertj.core.api.Assumptions.*"
-                     "org.hamcrest.Matchers.*"
-                     "org.junit.Assert.*"
-                     "org.junit.Assume.*"
-                     "org.junit.jupiter.api.Assertions.*"
-                     "org.junit.jupiter.api.Assumptions.*"
-                     "org.junit.jupiter.api.DynamicContainer.*"
-                     "org.junit.jupiter.api.DynamicTest.*"
-                     "org.mockito.ArgumentMatchers.*"])
-        '';
-      };
+      # lsp-java = {
+      #   enable = true;
+      #   defer = true;
+      #   hook = [ "(java-mode . rah-lsp)" ];
+      #   bindLocal = {
+      #     java-mode-map = { "C-c r o" = "lsp-java-organize-imports"; };
+      #   };
+      #   config = ''
+      #     (setq lsp-java-save-actions-organize-imports nil
+      #           lsp-java-completion-favorite-static-members
+      #               ["org.assertj.core.api.Assertions.*"
+      #                "org.assertj.core.api.Assumptions.*"
+      #                "org.hamcrest.Matchers.*"
+      #                "org.junit.Assert.*"
+      #                "org.junit.Assume.*"
+      #                "org.junit.jupiter.api.Assertions.*"
+      #                "org.junit.jupiter.api.Assumptions.*"
+      #                "org.junit.jupiter.api.DynamicContainer.*"
+      #                "org.junit.jupiter.api.DynamicTest.*"
+      #                "org.mockito.ArgumentMatchers.*"])
+      #   '';
+      # };
 
-      lsp-python-ms = {
-        enable = true;
-        defer = true;
-        hook = [ "(python-mode . rah-lsp)" ];
-        config = ''
-          (setq lsp-python-ms-executable (executable-find "python-language-server"))
-        '';
-      };
+      # lsp-python-ms = {
+      #   enable = true;
+      #   defer = true;
+      #   hook = [ "(python-mode . rah-lsp)" ];
+      #   config = ''
+      #     (setq lsp-python-ms-executable (executable-find "python-language-server"))
+      #   '';
+      # };
 
-      lsp-rust = {
-        enable = true;
-        defer = true;
-        hook = [ "(rust-mode . rah-lsp)" ];
-      };
+      # lsp-rust = {
+      #   enable = true;
+      #   defer = true;
+      #   hook = [ "(rust-mode . rah-lsp)" ];
+      # };
 
-      lsp-treemacs = {
-        enable = true;
-        after = [ "lsp-mode" ];
-        command = [ "lsp-treemacs-errors-list" ];
-      };
+      # lsp-treemacs = {
+      #   enable = true;
+      #   after = [ "lsp-mode" ];
+      #   command = [ "lsp-treemacs-errors-list" ];
+      # };
 
-      dap-mode = {
-        enable = false;
-        after = [ "lsp-mode" ];
-      };
+      # dap-mode = {
+      #   enable = false;
+      #   after = [ "lsp-mode" ];
+      # };
 
-      dap-mouse = {
-        enable = false;
-        hook = [ "(dap-mode . dap-tooltip-mode)" ];
-      };
+      # dap-mouse = {
+      #   enable = false;
+      #   hook = [ "(dap-mode . dap-tooltip-mode)" ];
+      # };
 
-      dap-ui = {
-        enable = false;
-        hook = [ "(dap-mode . dap-ui-mode)" ];
-      };
+      # dap-ui = {
+      #   enable = false;
+      #   hook = [ "(dap-mode . dap-ui-mode)" ];
+      # };
 
-      dap-java = {
-        enable = false;
-        after = [ "dap-mode" "lsp-java" ];
-      };
+      # dap-java = {
+      #   enable = false;
+      #   after = [ "dap-mode" "lsp-java" ];
+      # };
 
       #  Setup RefTeX.
-      reftex = {
+      #reftex = {
+      #  enable = true;
+      #  defer = true;
+      #  config = ''
+      #    (setq reftex-default-bibliography '("~/research/bibliographies/main.bib")
+      #          reftex-cite-format 'natbib
+      #          reftex-plug-into-AUCTeX t)
+      #  '';
+      #};
+
+      treesit = {
         enable = true;
-        defer = true;
+        init = ''
+        (setq treesit-language-source-alist
+          '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
+            (c . ("https://github.com/tree-sitter/tree-sitter-c"))
+            (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp"))
+            (css . ("https://github.com/tree-sitter/tree-sitter-css"))
+            (cmake . ("https://github.com/uyha/tree-sitter-cmake"))
+            (csharp     . ("https://github.com/tree-sitter/tree-sitter-c-sharp.git"))
+            (dockerfile . ("https://github.com/camdencheek/tree-sitter-dockerfile"))
+            (elisp . ("https://github.com/Wilfred/tree-sitter-elisp"))
+            (go . ("https://github.com/tree-sitter/tree-sitter-go"))
+            (gomod      . ("https://github.com/camdencheek/tree-sitter-go-mod.git"))
+            (html . ("https://github.com/tree-sitter/tree-sitter-html"))
+            (java       . ("https://github.com/tree-sitter/tree-sitter-java.git"))
+            (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
+            (json . ("https://github.com/tree-sitter/tree-sitter-json"))
+            (lua . ("https://github.com/Azganoth/tree-sitter-lua"))
+            (make . ("https://github.com/alemuller/tree-sitter-make"))
+            (markdown . ("https://github.com/MDeiml/tree-sitter-markdown" nil "tree-sitter-markdown/src"))
+            (ocaml . ("https://github.com/tree-sitter/tree-sitter-ocaml" nil "ocaml/src"))
+            (org . ("https://github.com/milisims/tree-sitter-org"))
+            (python . ("https://github.com/tree-sitter/tree-sitter-python"))
+            (php . ("https://github.com/tree-sitter/tree-sitter-php"))
+            (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" nil "typescript/src"))
+            (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" nil "tsx/src"))
+            (ruby . ("https://github.com/tree-sitter/tree-sitter-ruby"))
+            (rust . ("https://github.com/tree-sitter/tree-sitter-rust"))
+            (sql . ("https://github.com/derekstride/tree-sitter-sql" "gh-pages"))
+            (vue . ("https://github.com/merico-dev/tree-sitter-vue"))
+            (yaml . ("https://github.com/ikatyang/tree-sitter-yaml"))
+            (toml . ("https://github.com/tree-sitter/tree-sitter-toml"))
+            (zig . ("https://github.com/GrayJack/tree-sitter-zig")))
+
+          major-mode-remap-alist
+          '((c-mode          . c-ts-mode)
+            (c++-mode        . c++-ts-mode)
+            (c-or-c++-mode   . c-or-c++-ts-mode)
+            (cmake-mode      . cmake-ts-mode)
+            (conf-toml-mode  . toml-ts-mode)
+            (css-mode        . css-ts-mode)
+            (js-mode         . js-ts-mode)
+            (java-mode       . java-ts-mode)
+            (js-json-mode    . json-ts-mode)
+            (python-mode     . python-ts-mode)
+            (sh-mode         . bash-ts-mode)
+            (typescript-mode . typescript-ts-mode)
+            (rust-mode       . rust-ts-mode)
+            (go-mode         . go-ts-mode)))
+
+          (add-to-list 'auto-mode-alist '("CMakeLists\\'" . cmake-ts-mode))
+          (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-ts-mode))
+          (add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
+          (add-to-list 'auto-mode-alist '("/go\\.mod\\'" . go-mod-ts-mode))
+          (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
+          (add-to-list 'auto-mode-alist '("\\.y[a]?ml\\'" . yaml-ts-mode))
+        '';
+      };
+
+      eglot = {
+        enable = true;
+        init = ''
+        (setq eglot-stay-out-of '(company)
+          read-process-output-max (* 1024 1024)
+          eglot-sync-connect 0)
+        '';
         config = ''
-          (setq reftex-default-bibliography '("~/research/bibliographies/main.bib")
-                reftex-cite-format 'natbib
-                reftex-plug-into-AUCTeX t)
+        (fset #'jsonrpc--log-event #'ignore)  ; massive perf boost---don't log every event
+        (add-to-list 'eglot-server-programs
+                 '(python-ts-mode . ("pyright-langserver" "--stdio")))
+
+        (add-to-list 'eglot-server-programs
+                 '(sql-mode . ("sqls")))
+
+        (add-to-list 'eglot-server-programs
+                 '(haskell-mode . ("haskell-language-server" "--lsp")))
+
+        (add-to-list 'eglot-server-programs '((org-mode markdown-mode) "efm-langserver"))
+
+        (add-to-list 'eglot-server-programs '(nix-mode . ("nil")))
         '';
       };
 
@@ -943,7 +1032,7 @@ in {
           ''("\\.cpphs\\'" . haskell-mode)''
           ''("\\.lhs\\'" . haskell-literate-mode)''
         ];
-        hook = [ "(haskell-mode . subword-mode)" ];
+        hook = [ "(haskell-mode . subword-mode)" "(haskell-mode . eglot-ensure)" ];
         bindLocal.haskell-mode-map = {
           "C-c C-l" = "haskell-interactive-bring";
         };
@@ -977,6 +1066,7 @@ in {
 
       markdown-mode = {
         enable = true;
+        hook = [ "(markdown-mode . eglot-ensure)" ];
         config = ''
           (setq markdown-command "${pkgs.pandoc}/bin/pandoc")
         '';
@@ -993,7 +1083,7 @@ in {
 
       nix-mode = {
         enable = true;
-        hook = [ "(nix-mode . subword-mode)" ];
+        hook = [ "(nix-mode . subword-mode)" "(nix-mode . eglot-ensure)" ];
       };
 
       # Use ripgrep for fast text search in projects. I usually use
@@ -1005,7 +1095,7 @@ in {
 
       org = {
         enable = true;
-        package = epkgs: epkgs.org-plus-contrib;
+        # package = epkgs: epkgs.org-plus-contrib;
         bind = {
           "C-c o c" = "org-capture";
           "C-c o a" = "org-agenda";
@@ -1017,7 +1107,7 @@ in {
            . (lambda ()
                (add-hook 'completion-at-point-functions
                          'pcomplete-completions-at-point nil t)))
-        ''];
+        '' "(org-mode . eglot-ensure)"];
         config = ''
           ;; Some general stuff.
           (setq org-reverse-note-order t

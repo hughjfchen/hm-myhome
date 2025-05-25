@@ -2,7 +2,7 @@
 
 {
 
-  imports = [ ];
+  imports = [ ./emacs.nix ];
 
   # turn off the check between home-manager and nixpkgs version
   # home.enableNixpkgsReleaseCheck = false;
@@ -62,7 +62,7 @@
     # pkgs.haskellPackages.nix-freeze-tree
 
     # my only editor
-    pkgs.emacs-nox
+    # pkgs.emacs-nox
 
     # and some graph tool
     pkgs.graphviz-nox
@@ -230,6 +230,12 @@
     enable = true;
     # FIXME: This causes tmate to hang.
     # extraConfig = config.xdg.configFile."tmux/tmux.conf".text;
+  };
+
+  # for my emacs config
+  programs.emacs = {
+    enable = true;
+    package = pkgs.emacs-nox;
   };
 
   # disable kanshi service
