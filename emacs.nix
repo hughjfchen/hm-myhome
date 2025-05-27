@@ -37,9 +37,7 @@ in {
       ;; Configure color theme and modeline in early init to avoid flashing
       ;; during start.
       (require 'base16-theme)
-      (load-theme 'base16-nord t)
-      ;; (require 'solarized-theme)
-      ;; (load-theme 'solarized-dark t)
+      (load-theme 'base16-tomorrow-night t)
 
       (require 'doom-modeline)
       (setq doom-modeline-buffer-file-name-style 'truncate-except-project)
@@ -399,6 +397,15 @@ in {
       eldoc = {
         enable = true;
         command = [ "eldoc-mode" ];
+        init = ''
+          (setq eldoc-echo-area-use-multiline-p nil
+            eldoc-documentation-strategy #'eldoc-documentation-compose)
+            ;; eglot has 3 eldoc functions: `eglot-hover-eldoc-function', and
+            ;; `eglot-signature-eldoc-function', using the default strategy
+            ;; will only show one information, setting to the following option
+            ;; allows the possibility to show both information in eldoc
+            ;; buffer.
+        '';
       };
 
       # Enable Electric Indent mode to do automatic indentation on RET.
@@ -1155,8 +1162,8 @@ in {
         defer = true;
         config = ''
           ;; Set up agenda view.
-          (setq org-agenda-files (rah-all-org-files)
-                org-agenda-span 5
+          ;; (setq org-agenda-files (rah-all-org-files)
+              (setq org-agenda-span 5
                 org-deadline-warning-days 14
                 org-agenda-show-all-dates t
                 org-agenda-skip-deadline-if-done t
@@ -1427,6 +1434,18 @@ in {
       plantuml-mode = {
         enable = true;
         mode = [ ''"\\.puml\\'"'' ];
+      };
+
+      pikchr-mode = {
+        enable = true;
+      };
+
+      ox-pandoc = {
+        enable = true;
+      };
+
+      gnuplot = {
+        enable = true;
       };
 
       ace-window = {
