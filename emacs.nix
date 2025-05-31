@@ -36,8 +36,8 @@ in {
 
       ;; Configure color theme and modeline in early init to avoid flashing
       ;; during start.
-      (require 'base16-theme)
-      (load-theme 'base16-tomorrow-night t)
+      ;; (require 'base16-theme)
+      (load-theme 'tsdh-dark t)
 
       (require 'doom-modeline)
       (setq doom-modeline-buffer-file-name-style 'truncate-except-project)
@@ -262,7 +262,7 @@ in {
       solarized-theme = {
         enable = true;
       };
-      
+
       calc = {
         enable = true;
         command = [ "calc" ];
@@ -1140,6 +1140,9 @@ in {
                             "DONE(d!)"
                             "CANCELED(c@!)")))
 
+          ;; set plantmul jar path
+          (setq org-plantuml-jar-path (expand-file-name "${pkgs.plantuml}/lib/plantuml.jar"))
+
           ;; Active Org-babel languages
           (org-babel-do-load-languages 'org-babel-load-languages
                                        '((plantuml . t)
@@ -1419,6 +1422,9 @@ in {
       flycheck-plantuml = {
         enable = true;
         hook = [ "(flycheck-mode . flycheck-plantuml-setup)" ];
+        config = ''
+          (setq plantuml-jar-path (expand-file-name "${pkgs.plantuml}/lib/plantuml.jar"))
+        '';
       };
 
       project = {
@@ -1434,6 +1440,9 @@ in {
       plantuml-mode = {
         enable = true;
         mode = [ ''"\\.puml\\'"'' ];
+        config = ''
+          (setq plantuml-jar-path (expand-file-name "${pkgs.plantuml}/lib/plantuml.jar"))
+        '';
       };
 
       pikchr-mode = {
