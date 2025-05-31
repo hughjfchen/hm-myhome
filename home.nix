@@ -2,7 +2,8 @@
 
 {
 
-  imports = [ ./emacs.nix ];
+  # imports = [ ./emacs.nix ];
+  imports = [  ];
 
   # turn off the check between home-manager and nixpkgs version
   # home.enableNixpkgsReleaseCheck = false;
@@ -63,7 +64,7 @@
     # pkgs.haskellPackages.nix-freeze-tree
 
     # my only editor
-    # pkgs.emacs-nox
+    pkgs.emacs-nox
 
     # and some graph tool
     pkgs.graphviz-nox
@@ -234,10 +235,10 @@
   };
 
   # for my emacs config
-  programs.emacs = {
-    enable = true;
-    package = pkgs.emacs-nox;
-  };
+  # programs.emacs = {
+  #  enable = true;
+  #  package = pkgs.emacs-nox;
+  # };
 
   # disable kanshi service
   services.kanshi.enable = false;
