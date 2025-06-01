@@ -40,6 +40,7 @@
     pkgs.efm-langserver
     pkgs.poetry
     pkgs.pyright
+    pkgs.universal-ctags
 
     # some useful nix tools
     pkgs.nixfmt-rfc-style
