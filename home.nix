@@ -32,6 +32,7 @@
     # some utils
     pkgs.ispell
     pkgs.wget
+    pkgs.w3m
     pkgs.ripgrep
 
     # some dev tools
