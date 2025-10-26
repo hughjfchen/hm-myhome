@@ -33,6 +33,8 @@
     pkgs.ispell
     pkgs.wget
     pkgs.w3m
+    pkgs.rdrview
+    pkgs.reader
     pkgs.ripgrep
 
     # some dev tools
